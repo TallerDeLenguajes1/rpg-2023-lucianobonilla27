@@ -1,20 +1,27 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using EspacioPersonaje;
 
+
 Personaje nuevo;
 FabricaDePersonaje fp = new();
 List<Personaje> ListaPersonajes = new();
-
-for (int i = 0; i < 10; i++)
+PersonajeJson Json = new();
+if (Json.Existe("Personajes.Json"))
 {
+    ListaPersonajes = Json.LeerPersonajes("Personajes.json");
+
+}else
+{
+    for (int i = 0; i < 10; i++)
+    {
     nuevo = fp.CrearPersonaje();
     ListaPersonajes.Add(nuevo);
+    }
+    Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 }
 
-PersonajeJson Json = new();
-List<Personaje> deserealizada = new();
-deserealizada = Json.LeerPersonajes("Personajes.json");
-mostrar(deserealizada);
+mostrar(ListaPersonajes);
+
 
 
 
