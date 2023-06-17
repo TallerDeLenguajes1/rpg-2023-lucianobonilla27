@@ -10,8 +10,11 @@ for (int i = 0; i < 10; i++)
     nuevo = fp.CrearPersonaje();
     ListaPersonajes.Add(nuevo);
 }
-mostrar(ListaPersonajes);
 
+PersonajeJson Json = new();
+List<Personaje> deserealizada = new();
+deserealizada = Json.LeerPersonajes("Personajes.json");
+mostrar(deserealizada);
 
 
 

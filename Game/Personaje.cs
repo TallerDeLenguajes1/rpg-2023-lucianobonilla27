@@ -1,5 +1,7 @@
 namespace EspacioPersonaje;
 using System;
+using System.Text.Json;
+using System.IO;
 class Personaje
 {
 
@@ -108,7 +110,25 @@ class FabricaDePersonaje
 
 class PersonajeJson
 {
-    public void CargarPersonaje(List<Personaje> lista){
-        
+    public void GuardarPersonajes(List<Personaje> lista, string archivo)
+        {
+            string jsonString = JsonSerializer.Serialize(lista, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(archivo, jsonString);
+        }
+
+     public List<Personaje> LeerPersonajes(string archivo)
+    {
+        string jsonString = File.ReadAllText(archivo);
+        List<Personaje> lista = JsonSerializer.Deserialize<List<Personaje>>(jsonString);
+        return lista;
+    }     
+
+    public bool Existe(string archivo){
+        if (File.Exists(archivo))
+        {
+            string jsonString = File.ReadAllText(archivo);
+            return !string.IsNullOrEmpty(jsonString);
+        }
+        return false;
     }
 }
