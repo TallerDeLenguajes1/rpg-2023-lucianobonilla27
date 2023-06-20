@@ -20,12 +20,12 @@ if (Json.Existe("Personajes.Json"))
     Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 }
 
-mostrar(ListaPersonajes);
+mostrarLista(ListaPersonajes);
 
 
 
 
-static void mostrar(List<Personaje> lista){
+static void mostrarLista(List<Personaje> lista){
    foreach (var item in lista)
    {
         Console.WriteLine("/////////////////////");
@@ -44,6 +44,21 @@ static void mostrar(List<Personaje> lista){
    }
 }
 
+static void mostrarPersonaje(Personaje player,int num){
+    Console.WriteLine("////////////////PLAYER {0}///////////////////",num);
+    Console.WriteLine("Tipo: " + player.Tipo);
+    Console.WriteLine("Nombre: " + player.Nombre);
+    Console.WriteLine("Apodo: " + player.Apodo);
+    Console.WriteLine("Edad: " + player.Edad);
+    Console.WriteLine("Velocidad: " + player.Velocidad);
+    Console.WriteLine("Destreza: " + player.Destreza);
+    Console.WriteLine("Fuerza: " + player.Fuerza);
+    Console.WriteLine("Nivel: " + player.Nivel);
+    Console.WriteLine("Armadura: " + player.Velocidad);
+    Console.WriteLine("//////////////////////////////////////////");
+    Console.WriteLine("");
+}
+
 Console.WriteLine("---------ELIGIENDO OPONENTES-----------");
 Random rand = new Random();
 int indiceAleatorio = rand.Next(ListaPersonajes.Count);
@@ -51,30 +66,9 @@ int indiceAleatorio = rand.Next(ListaPersonajes.Count);
 Personaje Player1 = ListaPersonajes[indiceAleatorio];
 indiceAleatorio = rand.Next(ListaPersonajes.Count);
 Personaje Player2 = ListaPersonajes[indiceAleatorio];
-Console.WriteLine("////////////////PLAYER 1///////////////////");
-Console.WriteLine("Tipo: " + Player1.Tipo);
-Console.WriteLine("Nombre: " + Player1.Nombre);
-Console.WriteLine("Apodo: " + Player1.Apodo);
-Console.WriteLine("Edad: " + Player1.Edad);
-Console.WriteLine("Velocidad: " + Player1.Velocidad);
-Console.WriteLine("Destreza: " + Player1.Destreza);
-Console.WriteLine("Fuerza: " + Player1.Fuerza);
-Console.WriteLine("Nivel: " + Player1.Nivel);
-Console.WriteLine("Armadura: " + Player1.Velocidad);
-Console.WriteLine("//////////////////////////////////////////");
+mostrarPersonaje(Player1,1);
 Console.WriteLine("----------------VS----------------");
-Console.WriteLine("////////////////PLAYER 2///////////////////");
-Console.WriteLine("Tipo: " + Player2.Tipo);
-Console.WriteLine("Nombre: " + Player2.Nombre);
-Console.WriteLine("Apodo: " + Player2.Apodo);
-Console.WriteLine("Edad: " + Player2.Edad);
-Console.WriteLine("Velocidad: " + Player2.Velocidad);
-Console.WriteLine("Destreza: " + Player2.Destreza);
-Console.WriteLine("Fuerza: " + Player2.Fuerza);
-Console.WriteLine("Nivel: " + Player2.Nivel);
-Console.WriteLine("Armadura: " + Player2.Velocidad);
-Console.WriteLine("//////////////////////////////////////////");
-Console.WriteLine("");
+mostrarPersonaje(Player2,2);
 
 int turnos = 1;
 int ataque;
@@ -89,7 +83,7 @@ while (Player1.Salud != 0 && Player2.Salud != 0)
         efectividad = rand.Next(1,101);
         defensa = Player2.Armadura * Player2.Velocidad;
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
-        Console.WriteLine("player 1 hizo" + daño);
+        Console.WriteLine("Player 1 ataca y realiza " + daño + " de daño");
         Player2.Salud -= daño;
     }else //ataca player 2 y defiende player 1
     {
@@ -97,8 +91,7 @@ while (Player1.Salud != 0 && Player2.Salud != 0)
         efectividad = rand.Next(1,101);
         defensa = Player1.Armadura * Player1.Velocidad;
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
-        Console.WriteLine("player 2 hizo" + daño);
-
+        Console.WriteLine("Player 2 ataca y realiza " + daño + " de daño");
         Player1.Salud -= daño;
     }
     turnos++;
@@ -106,9 +99,11 @@ while (Player1.Salud != 0 && Player2.Salud != 0)
 
 if (Player1.Salud != 0)
 {
-    Console.WriteLine("ganador player1");
+    Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
+    mostrarPersonaje(Player1,1);
 }else
 {
-    Console.WriteLine("ganador player2");
+    Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
+    mostrarPersonaje(Player2,2);
     
 }
