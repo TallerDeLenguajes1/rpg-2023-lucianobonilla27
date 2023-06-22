@@ -75,7 +75,7 @@ int ataque;
 int efectividad;
 int defensa;
 int ajuste = 500;
-while (Player1.Salud != 0 && Player2.Salud != 0)
+while (Player1.Salud > 0 && Player2.Salud > 0)
 {
     if ((turnos % 2) != 0) //ataca player 1 y defiende player 2
     {
@@ -97,13 +97,20 @@ while (Player1.Salud != 0 && Player2.Salud != 0)
     turnos++;
 }
 
-if (Player1.Salud != 0)
+if (Player1.Salud > 0)
 {
     Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
+    Player1.Salud = 100;
+    Player1.Nivel+= 5;
     mostrarPersonaje(Player1,1);
+    ListaPersonajes.Remove(Player2);
 }else
 {
     Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
-    mostrarPersonaje(Player2,2);
+    Player2.Salud = 100;
+    Player2.Nivel+= 5;
+    mostrarPersonaje(Player2,1);
+    ListaPersonajes.Remove(Player1);
+
     
 }
