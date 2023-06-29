@@ -2,6 +2,8 @@ namespace EspacioPersonaje;
 using System;
 using System.Text.Json;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 class Personaje
 {
 
@@ -42,47 +44,44 @@ class Personaje
 
 class FabricaDePersonaje
 {
-    
-    public Personaje CrearPersonaje(){
-        string[] tipo = { "Guerrero",
-        "Mago",
-        "Arquero",
-        "Ladrón",
-        "Caballero"};
-         string[] nombre = { "Richard",
-        "Peter",
-        "Robert",
-        "Gabriel",
-        "Federico"};
+    private static readonly HttpClient _httpClient = new HttpClient();
+
+    public async Task<Personaje> CrearPersonajeAsync()
+    {
+        string[] tipo = { "Guerrero", "Mago", "Arquero", "Ladrón", "Caballero" };
+
+        // Obtener nombres aleatorios de hombres de la API
+        string[] nombres = await ObtenerNombresAleatoriosAsync(5, gender: "male");
+
         var pj = new Personaje();
         Random rand = new();
         pj.Tipo = tipo[rand.Next(5)];
-        pj.Nombre = nombre[rand.Next(5)];
+        pj.Nombre = nombres[rand.Next(5)];
         switch (pj.Tipo)
         {
             case "Guerrero":
-            pj.Apodo = "invensible";
-            break;
-           
+                pj.Apodo = "invensible";
+                break;
+
             case "Mago":
-            pj.Apodo = "encantador";
-            break;
+                pj.Apodo = "encantador";
+                break;
 
             case "Arquero":
-            pj.Apodo = "ojo de halcón";
-            break;
+                pj.Apodo = "ojo de halcón";
+                break;
 
             case "Ladrón":
-            pj.Apodo = "veloz";
-            break;
+                pj.Apodo = "veloz";
+                break;
 
             case "Caballero":
-            pj.Apodo = "elegante";
-            break;
+                pj.Apodo = "elegante";
+                break;
         }
 
         // Generar una fecha aleatoria entre el año 900 y el año 1500
-        int year = rand.Next(1723,2024);
+        int year = rand.Next(1723, 2024);
 
         // Generar un mes aleatorio entre 1 y 12
         int month = rand.Next(1, 13);
@@ -91,20 +90,45 @@ class FabricaDePersonaje
         int day = rand.Next(1, DateTime.DaysInMonth(year, month) + 1);
 
         // Crear la fecha de nacimiento
-        pj.FechaNac  = new DateTime(year, month, day);
+        pj.FechaNac = new DateTime(year, month, day);
         pj.Edad = 2023 - year;
-        pj.Velocidad = rand.Next(1,11);
-        pj.Destreza = rand.Next(1,6);
-        pj.Fuerza = rand.Next(1,11);
-        pj.Nivel = rand.Next(1,11);
-        pj.Armadura = rand.Next(1,11);
+
+        pj.Velocidad = rand.Next(1, 11);
+        pj.Destreza = rand.Next(1, 6);
+        pj.Fuerza = rand.Next(1, 11);
+        pj.Nivel = rand.Next(1, 11);
+        pj.Armadura = rand.Next(1, 11);
         pj.Salud = 100;
 
-        
-        
-        
-        
         return pj;
+    }
+
+    private async Task<string[]> ObtenerNombresAleatoriosAsync(int cantidad, string gender)
+    {
+        string apiUrl = $"https://randomuser.me/api/?results={cantidad}&gender={gender}";
+
+        using (HttpResponseMessage response = await _httpClient.GetAsync(apiUrl))
+        {
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            // Procesar la respuesta JSON y obtener los nombres
+            JsonDocument jsonDocument = JsonDocument.Parse(responseBody);
+            JsonElement root = jsonDocument.RootElement;
+
+            string[] nombres = new string[cantidad];
+            int index = 0;
+
+            foreach (JsonElement user in root.GetProperty("results").EnumerateArray())
+            {
+                string firstName = user.GetProperty("name").GetProperty("first").GetString();
+                string lastName = user.GetProperty("name").GetProperty("last").GetString();
+
+                nombres[index] = $"{firstName} {lastName}";
+                index++;
+            }
+
+            return nombres;
+        }
     }
 }
 
@@ -132,3 +156,109 @@ class PersonajeJson
         return false;
     }
 }
+
+// API NOMBRES
+
+// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    public class Coordinates
+    {
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+    }
+
+    public class Dob
+    {
+        public DateTime date { get; set; }
+        public int age { get; set; }
+    }
+
+    public class Id
+    {
+        public string name { get; set; }
+        public string value { get; set; }
+    }
+
+    public class Info
+    {
+        public string seed { get; set; }
+        public int results { get; set; }
+        public int page { get; set; }
+        public string version { get; set; }
+    }
+
+    public class Location
+    {
+        public Street street { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string country { get; set; }
+        public object postcode { get; set; }
+        public Coordinates coordinates { get; set; }
+        public Timezone timezone { get; set; }
+    }
+
+    public class Login
+    {
+        public string uuid { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string salt { get; set; }
+        public string md5 { get; set; }
+        public string sha1 { get; set; }
+        public string sha256 { get; set; }
+    }
+
+    public class Name
+    {
+        public string title { get; set; }
+        public string first { get; set; }
+        public string last { get; set; }
+    }
+
+    public class Picture
+    {
+        public string large { get; set; }
+        public string medium { get; set; }
+        public string thumbnail { get; set; }
+    }
+
+    public class Registered
+    {
+        public DateTime date { get; set; }
+        public int age { get; set; }
+    }
+
+    public class Result
+    {
+        public string gender { get; set; }
+        public Name name { get; set; }
+        public Location location { get; set; }
+        public string email { get; set; }
+        public Login login { get; set; }
+        public Dob dob { get; set; }
+        public Registered registered { get; set; }
+        public string phone { get; set; }
+        public string cell { get; set; }
+        public Id id { get; set; }
+        public Picture picture { get; set; }
+        public string nat { get; set; }
+    }
+
+    public class Root
+    {
+        public List<Result> results { get; set; }
+        public Info info { get; set; }
+    }
+
+    public class Street
+    {
+        public int number { get; set; }
+        public string name { get; set; }
+    }
+
+    public class Timezone
+    {
+        public string offset { get; set; }
+        public string description { get; set; }
+    }
+

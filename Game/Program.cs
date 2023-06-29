@@ -2,6 +2,7 @@
 using EspacioPersonaje;
 
 
+
 Personaje nuevo;
 FabricaDePersonaje fp = new();
 List<Personaje> ListaPersonajes = new();
@@ -14,7 +15,7 @@ if (Json.Existe("Personajes.Json"))
 {
     for (int i = 0; i < 10; i++)
     {
-    nuevo = fp.CrearPersonaje();
+    nuevo =await fp.CrearPersonajeAsync();
     ListaPersonajes.Add(nuevo);
     }
     Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
@@ -68,16 +69,34 @@ indiceAleatorio = rand.Next(ListaPersonajes.Count);
 Personaje Player2 = ListaPersonajes[indiceAleatorio];
 mostrarPersonaje(Player1,1);
 Console.WriteLine("----------------VS----------------");
-mostrarPersonaje(Player2,2);
+Console.WriteLine("");
 
-int turnos = 1;
+mostrarPersonaje(Player2,2);
+Console.WriteLine("--------Se tira una moneda en la arena--------");
+Console.WriteLine("-------Si sale cara empieza atacando el Player  1-------");
+Console.WriteLine("-------Si sale cruz empieza atacando el Player  2-------");
+string result = await FlipCoin();
+Console.WriteLine($"Resultado del lanzamiento de moneda: {result}");
+int turnos;
+
+if (result == "Cara")
+{
+    turnos = 1;
+}else
+{
+    turnos = 2;
+}
+
+
 int ataque;
 int efectividad;
 int defensa;
 int ajuste = 500;
+
+Console.WriteLine("/////////////////EMPIEZA LA BATALLA//////////////////");
 while (Player1.Salud > 0 && Player2.Salud > 0)
 {
-    if ((turnos % 2) != 0) //ataca player 1 y defiende player 2
+    if ((turnos % 2) != 0) 
     {
         ataque = Player1.Destreza * Player1.Fuerza * Player1.Nivel;
         efectividad = rand.Next(1,101);
@@ -85,7 +104,7 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
         Console.WriteLine("Player 1 ataca y realiza " + daño + " de daño");
         Player2.Salud -= daño;
-    }else //ataca player 2 y defiende player 1
+    }else 
     {
         ataque = Player2.Destreza * Player2.Fuerza * Player2.Nivel;
         efectividad = rand.Next(1,101);
@@ -109,8 +128,19 @@ if (Player1.Salud > 0)
     Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
     Player2.Salud = 100;
     Player2.Nivel+= 5;
-    mostrarPersonaje(Player2,1);
+    mostrarPersonaje(Player2,2);
     ListaPersonajes.Remove(Player1);
 
     
 }
+
+ static async Task<string> FlipCoin()
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            string apiUrl = "https://www.random.org/integers/?num=1&min=0&max=1&col=1&base=10&format=plain&rnd=new";
+            string response = await client.GetStringAsync(apiUrl);
+            int randomNumber = int.Parse(response);
+            return (randomNumber == 0) ? "Cara" : "Cruz";
+        }
+    }
