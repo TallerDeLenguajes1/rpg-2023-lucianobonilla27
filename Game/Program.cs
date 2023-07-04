@@ -10,8 +10,18 @@ PersonajeJson Json = new();
 if (Json.Existe("Personajes.Json"))
 {
     ListaPersonajes = Json.LeerPersonajes("Personajes.json");
-
-}else
+    if (ListaPersonajes.Count <= 1)
+    {
+        ListaPersonajes.Clear(); // Limpiar la lista existente si tiene menos de dos personajes
+        for (int i = 0; i < 10; i++)
+        {
+        nuevo =await fp.CrearPersonajeAsync();
+        ListaPersonajes.Add(nuevo);
+        }
+        Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
+    }
+}
+else
 {
     for (int i = 0; i < 10; i++)
     {
@@ -45,33 +55,22 @@ static void mostrarLista(List<Personaje> lista){
    }
 }
 
-static void mostrarPersonaje(Personaje player,int num){
-    Console.WriteLine("////////////////PLAYER {0}///////////////////",num);
-    Console.WriteLine("Tipo: " + player.Tipo);
-    Console.WriteLine("Nombre: " + player.Nombre);
-    Console.WriteLine("Apodo: " + player.Apodo);
-    Console.WriteLine("Edad: " + player.Edad);
-    Console.WriteLine("Velocidad: " + player.Velocidad);
-    Console.WriteLine("Destreza: " + player.Destreza);
-    Console.WriteLine("Fuerza: " + player.Fuerza);
-    Console.WriteLine("Nivel: " + player.Nivel);
-    Console.WriteLine("Armadura: " + player.Velocidad);
-    Console.WriteLine("//////////////////////////////////////////");
-    Console.WriteLine("");
-}
 
 Console.WriteLine("---------ELIGIENDO OPONENTES-----------");
 Random rand = new Random();
 int indiceAleatorio = rand.Next(ListaPersonajes.Count);
-
 Personaje Player1 = ListaPersonajes[indiceAleatorio];
+ListaPersonajes.Remove(ListaPersonajes[indiceAleatorio]);  //Lo quito de la lista y solo volverá el ganador
+
 indiceAleatorio = rand.Next(ListaPersonajes.Count);
 Personaje Player2 = ListaPersonajes[indiceAleatorio];
+ListaPersonajes.Remove(ListaPersonajes[indiceAleatorio]);
+
 mostrarPersonaje(Player1,1);
 Console.WriteLine("----------------VS----------------");
 Console.WriteLine("");
-
 mostrarPersonaje(Player2,2);
+
 Console.WriteLine("--------Se tira una moneda en la arena--------");
 Console.WriteLine("-------Si sale cara empieza atacando el Player  1-------");
 Console.WriteLine("-------Si sale cruz empieza atacando el Player  2-------");
@@ -119,22 +118,39 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
 if (Player1.Salud > 0)
 {
     Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
-    Player1.Salud = 100;
-    Player1.Nivel+= 5;
+    Player1 = incrementoNivel(Player1);
     mostrarPersonaje(Player1,1);
-    ListaPersonajes.Remove(Player2);
+    ListaPersonajes.Add(Player1);
 }else
 {
     Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
-    Player2.Salud = 100;
-    Player2.Nivel+= 5;
+    Player2 = incrementoNivel(Player2);
     mostrarPersonaje(Player2,2);
-    ListaPersonajes.Remove(Player1);
+    ListaPersonajes.Add(Player2);
 
     
 }
+Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 
- static async Task<string> FlipCoin()
+
+static void mostrarPersonaje(Personaje player,int num){
+    Console.WriteLine("////////////////PLAYER {0}///////////////////",num);
+    Console.WriteLine("Tipo: " + player.Tipo);
+    Console.WriteLine("Nombre: " + player.Nombre);
+    Console.WriteLine("Apodo: " + player.Apodo);
+    Console.WriteLine("Edad: " + player.Edad);
+    Console.WriteLine("Velocidad: " + player.Velocidad);
+    Console.WriteLine("Destreza: " + player.Destreza);
+    Console.WriteLine("Fuerza: " + player.Fuerza);
+    Console.WriteLine("Nivel: " + player.Nivel);
+    Console.WriteLine("Armadura: " + player.Velocidad);
+    Console.WriteLine("//////////////////////////////////////////");
+    Console.WriteLine("");
+}
+
+
+
+static async Task<string> FlipCoin()
     {
         using (HttpClient client = new HttpClient())
         {
@@ -144,3 +160,13 @@ if (Player1.Salud > 0)
             return (randomNumber == 0) ? "Cara" : "Cruz";
         }
     }
+
+static Personaje incrementoNivel(Personaje pj){
+    pj.Armadura++;
+    pj.Destreza++;
+    pj.Fuerza++;
+    pj.Velocidad++;
+    pj.Nivel++;
+    pj.Salud = 100;
+    return pj;
+}

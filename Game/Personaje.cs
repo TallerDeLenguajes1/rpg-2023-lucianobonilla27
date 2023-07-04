@@ -61,22 +61,42 @@ class FabricaDePersonaje
         {
             case "Guerrero":
                 pj.Apodo = "invensible";
+                pj.Velocidad = 4;
+                pj.Destreza = 3;
+                pj.Fuerza = 5;
+                pj.Armadura = 3;
                 break;
 
             case "Mago":
                 pj.Apodo = "encantador";
+                pj.Velocidad = 2;
+                pj.Destreza = 2;
+                pj.Fuerza = 6;
+                pj.Armadura = 5;
                 break;
 
             case "Arquero":
                 pj.Apodo = "ojo de halcón";
+                pj.Velocidad = 4;
+                pj.Destreza = 4;
+                pj.Fuerza = 4;
+                pj.Armadura = 3;
                 break;
 
             case "Ladrón":
                 pj.Apodo = "veloz";
+                pj.Velocidad = 6;
+                pj.Destreza = 4;
+                pj.Fuerza = 3;
+                pj.Armadura = 2;
                 break;
 
             case "Caballero":
                 pj.Apodo = "elegante";
+                pj.Velocidad = 2;
+                pj.Destreza = 4;
+                pj.Fuerza = 4;
+                pj.Armadura = 5;
                 break;
         }
 
@@ -92,12 +112,7 @@ class FabricaDePersonaje
         // Crear la fecha de nacimiento
         pj.FechaNac = new DateTime(year, month, day);
         pj.Edad = 2023 - year;
-
-        pj.Velocidad = rand.Next(1, 11);
-        pj.Destreza = rand.Next(1, 6);
-        pj.Fuerza = rand.Next(1, 11);
-        pj.Nivel = rand.Next(1, 11);
-        pj.Armadura = rand.Next(1, 11);
+        pj.Nivel = 1; //El nivel subira cuando un personaje gane alguna batalla, subiendo ademas todas sus stats
         pj.Salud = 100;
 
         return pj;
