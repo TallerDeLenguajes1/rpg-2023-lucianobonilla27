@@ -69,7 +69,7 @@ class FabricaDePersonaje
 
             case "Mago":
                 pj.Apodo = "encantador";
-                pj.Velocidad = 2;
+                pj.Velocidad = 4;
                 pj.Destreza = 2;
                 pj.Fuerza = 6;
                 pj.Armadura = 5;
@@ -112,7 +112,7 @@ class FabricaDePersonaje
         // Crear la fecha de nacimiento
         pj.FechaNac = new DateTime(year, month, day);
         pj.Edad = 2023 - year;
-        pj.Nivel = 1; //El nivel subira cuando un personaje gane alguna batalla, subiendo ademas todas sus stats
+        pj.Nivel = 3; //El nivel subira cuando un personaje gane alguna batalla, subiendo ademas todas sus stats
         pj.Salud = 100;
 
         return pj;

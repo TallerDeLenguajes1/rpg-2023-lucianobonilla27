@@ -7,6 +7,27 @@ Personaje nuevo;
 FabricaDePersonaje fp = new();
 List<Personaje> ListaPersonajes = new();
 PersonajeJson Json = new();
+Console.WriteLine("█████████████████████████████████");
+        Console.WriteLine("█                               █");
+        Console.WriteLine("█      RPG ARENA DE BATALLA     █");
+        Console.WriteLine("█                               █");
+        Console.WriteLine("█████████████████████████████████");
+        Console.WriteLine("");
+        
+        
+// Pausa de 1 segundo para mostrar la portada
+Thread.Sleep(1000);
+
+Console.WriteLine("Bienvenido a la RPG Arena de Batalla");
+Console.Write("Cargando.");
+for (int i = 0; i < 3; i++)
+{
+    Thread.Sleep(500);
+    Console.Write(".");
+}
+Console.WriteLine("");
+
+
 if (Json.Existe("Personajes.Json"))
 {
     ListaPersonajes = Json.LeerPersonajes("Personajes.json");
@@ -31,6 +52,9 @@ else
     Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 }
 
+
+Console.WriteLine("Estos son nuestros Peleadores disponibles:");
+Thread.Sleep(1000);
 mostrarLista(ListaPersonajes);
 
 
@@ -39,24 +63,33 @@ mostrarLista(ListaPersonajes);
 static void mostrarLista(List<Personaje> lista){
    foreach (var item in lista)
    {
-        Console.WriteLine("/////////////////////");
-        Console.WriteLine("Tipo: " + item.Tipo);
-        Console.WriteLine("Nombre: " + item.Nombre);
-        Console.WriteLine("Apodo: " + item.Apodo);
-        Console.WriteLine("Edad: " + item.Edad);
-        Console.WriteLine("Velocidad: " + item.Velocidad);
-        Console.WriteLine("Destreza: " + item.Destreza);
-        Console.WriteLine("Fuerza: " + item.Fuerza);
-        Console.WriteLine("Nivel: " + item.Nivel);
-        Console.WriteLine("Armadura: " + item.Velocidad);
-        Console.WriteLine("/////////////////////");
+Console.WriteLine("╔══════════════════════════════════════╗");
+Console.WriteLine("║ Tipo: " + item.Tipo.PadRight(30) + " ║");
+Console.WriteLine("║ Nombre: " + item.Nombre.PadRight(28) + " ║");
+Console.WriteLine("║ Apodo: " + item.Apodo.PadRight(29) + " ║");
+Console.WriteLine("║ Edad: " + item.Edad.ToString().PadRight(30) + " ║");
+Console.WriteLine("║ Velocidad: " + item.Velocidad.ToString().PadRight(25) + " ║");
+Console.WriteLine("║ Destreza: " + item.Destreza.ToString().PadRight(26) + " ║");
+Console.WriteLine("║ Fuerza: " + item.Fuerza.ToString().PadRight(28) + " ║");
+Console.WriteLine("║ Nivel: " + item.Nivel.ToString().PadRight(28) + "  ║");
+Console.WriteLine("║ Armadura: " + item.Armadura.ToString().PadRight(25) + "  ║");
+Console.WriteLine("╚══════════════════════════════════════╝");
+
         Console.WriteLine("");
+        Thread.Sleep(1000);
+
 
    }
 }
 
 
-Console.WriteLine("---------ELIGIENDO OPONENTES-----------");
+Console.WriteLine("╔══════════════════════════════════════╗");
+Console.WriteLine("║                                      ║");
+Console.WriteLine("║  EL ENFRENTAMIENTO DE HOY SERÁ       ║");
+Console.WriteLine("║                                      ║");
+Console.WriteLine("╚══════════════════════════════════════╝");
+Thread.Sleep(1000);
+
 Random rand = new Random();
 int indiceAleatorio = rand.Next(ListaPersonajes.Count);
 Personaje Player1 = ListaPersonajes[indiceAleatorio];
@@ -67,15 +100,27 @@ Personaje Player2 = ListaPersonajes[indiceAleatorio];
 ListaPersonajes.Remove(ListaPersonajes[indiceAleatorio]);
 
 mostrarPersonaje(Player1,1);
+Thread.Sleep(1000);
+
 Console.WriteLine("----------------VS----------------");
+Thread.Sleep(1000);
+
 Console.WriteLine("");
 mostrarPersonaje(Player2,2);
+Thread.Sleep(1000);
+
 
 Console.WriteLine("--------Se tira una moneda en la arena--------");
-Console.WriteLine("-------Si sale cara empieza atacando el Player  1-------");
-Console.WriteLine("-------Si sale cruz empieza atacando el Player  2-------");
+Console.WriteLine($"-------Si sale cara empieza atacando {Player1.Nombre}-------");
+Console.WriteLine($"-------Si sale cruz empieza atacando {Player2.Nombre}-------");
+Console.WriteLine("");
+Thread.Sleep(1000);
+
+
 string result = await FlipCoin();
 Console.WriteLine($"Resultado del lanzamiento de moneda: {result}");
+Console.WriteLine("");
+
 int turnos;
 
 if (result == "Cara")
@@ -92,6 +137,7 @@ int efectividad;
 int defensa;
 int ajuste = 500;
 
+
 Console.WriteLine("/////////////////EMPIEZA LA BATALLA//////////////////");
 while (Player1.Salud > 0 && Player2.Salud > 0)
 {
@@ -101,7 +147,24 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
         efectividad = rand.Next(1,101);
         defensa = Player2.Armadura * Player2.Velocidad;
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
-        Console.WriteLine("Player 1 ataca y realiza " + daño + " de daño");
+        switch (rand.Next(0,3))
+        {
+            case 0:
+             Console.WriteLine($"{Player1.Nombre} ataca y realiza " + daño + " de daño");
+            break;
+
+            case 1:
+             Console.WriteLine($"El {Player1.Tipo} {Player1.Nombre} realizo un ataque causando {daño} de daño");
+            
+            break;
+
+            case 2:
+             Console.WriteLine($"El {Player1.Apodo} {Player1.Nombre} realizo un ataque causando {daño} de daño");
+             
+            break;
+            
+        }
+        
         Player2.Salud -= daño;
     }else 
     {
@@ -109,10 +172,29 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
         efectividad = rand.Next(1,101);
         defensa = Player1.Armadura * Player1.Velocidad;
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
-        Console.WriteLine("Player 2 ataca y realiza " + daño + " de daño");
+         switch (rand.Next(0,3))
+        {
+            case 0:
+             Console.WriteLine($"{Player2.Nombre} ataca y realiza " + daño + " de daño");
+            break;
+
+            case 1:
+             Console.WriteLine($"El {Player2.Tipo} {Player2.Nombre} realizo un ataque causando {daño} de daño");
+            
+            break;
+
+            case 2:
+             Console.WriteLine($"El {Player2.Apodo} {Player2.Nombre} realizo un ataque causando {daño} de daño");
+             
+            break;
+            
+        }
+    
         Player1.Salud -= daño;
     }
     turnos++;
+    Thread.Sleep(500);
+    
 }
 
 if (Player1.Salud > 0)
@@ -131,20 +213,24 @@ if (Player1.Salud > 0)
     
 }
 Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
-
+Console.WriteLine("////////////////////////////////////");
+Console.WriteLine("           FIN DEL JUEGO            ");
+Console.WriteLine("////////////////////////////////////");
 
 static void mostrarPersonaje(Personaje player,int num){
-    Console.WriteLine("////////////////PLAYER {0}///////////////////",num);
-    Console.WriteLine("Tipo: " + player.Tipo);
-    Console.WriteLine("Nombre: " + player.Nombre);
-    Console.WriteLine("Apodo: " + player.Apodo);
-    Console.WriteLine("Edad: " + player.Edad);
-    Console.WriteLine("Velocidad: " + player.Velocidad);
-    Console.WriteLine("Destreza: " + player.Destreza);
-    Console.WriteLine("Fuerza: " + player.Fuerza);
-    Console.WriteLine("Nivel: " + player.Nivel);
-    Console.WriteLine("Armadura: " + player.Velocidad);
-    Console.WriteLine("//////////////////////////////////////////");
+Console.WriteLine("╔══════════════════════════════════════╗");
+Console.WriteLine($"║ PELEADOR {num}".PadRight(37) + "  ║");
+Console.WriteLine("║ Tipo: " + player.Tipo.PadRight(30) + " ║");
+Console.WriteLine("║ Nombre: " + player.Nombre.PadRight(28) + " ║");
+Console.WriteLine("║ Apodo: " + player.Apodo.PadRight(29) + " ║");
+Console.WriteLine("║ Edad: " + player.Edad.ToString().PadRight(30) + " ║");
+Console.WriteLine("║ Velocidad: " + player.Velocidad.ToString().PadRight(25) + " ║");
+Console.WriteLine("║ Destreza: " + player.Destreza.ToString().PadRight(26) + " ║");
+Console.WriteLine("║ Fuerza: " + player.Fuerza.ToString().PadRight(28) + " ║");
+Console.WriteLine("║ Nivel: " + player.Nivel.ToString().PadRight(28) + "  ║");
+Console.WriteLine("║ Armadura: " + player.Armadura.ToString().PadRight(25) + "  ║");
+Console.WriteLine("╚══════════════════════════════════════╝");
+
     Console.WriteLine("");
 }
 
