@@ -7,13 +7,22 @@ Personaje nuevo;
 FabricaDePersonaje fp = new();
 List<Personaje> ListaPersonajes = new();
 PersonajeJson Json = new();
-Console.WriteLine("█████████████████████████████████");
-        Console.WriteLine("█                               █");
-        Console.WriteLine("█      RPG ARENA DE BATALLA     █");
-        Console.WriteLine("█                               █");
-        Console.WriteLine("█████████████████████████████████");
-        Console.WriteLine("");
-        
+string title =
+@"██████╗░██████╗░░██████╗░  ░█████╗░██████╗░███████╗███╗░░██╗░█████╗░  ██████╗░███████╗
+██╔══██╗██╔══██╗██╔════╝░  ██╔══██╗██╔══██╗██╔════╝████╗░██║██╔══██╗  ██╔══██╗██╔════╝
+██████╔╝██████╔╝██║░░██╗░  ███████║██████╔╝█████╗░░██╔██╗██║███████║  ██║░░██║█████╗░░
+██╔══██╗██╔═══╝░██║░░╚██╗  ██╔══██║██╔══██╗██╔══╝░░██║╚████║██╔══██║  ██║░░██║██╔══╝░░
+██║░░██║██║░░░░░╚██████╔╝  ██║░░██║██║░░██║███████╗██║░╚███║██║░░██║  ██████╔╝███████╗
+╚═╝░░╚═╝╚═╝░░░░░░╚═════╝░  ╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝╚═╝░░╚══╝╚═╝░░╚═╝  ╚═════╝░╚══════╝
+
+██████╗░░█████╗░████████╗░█████╗░██╗░░░░░██╗░░░░░░█████╗░
+██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░██║░░░░░██╔══██╗
+██████╦╝███████║░░░██║░░░███████║██║░░░░░██║░░░░░███████║
+██╔══██╗██╔══██║░░░██║░░░██╔══██║██║░░░░░██║░░░░░██╔══██║
+██████╦╝██║░░██║░░░██║░░░██║░░██║███████╗███████╗██║░░██║
+╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚═╝";
+
+        Console.WriteLine(title);
         
 // Pausa de 1 segundo para mostrar la portada
 Thread.Sleep(1000);
@@ -52,6 +61,57 @@ else
     Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 }
 
+Console.WriteLine("╔══════════════════════════════════╗");
+Console.WriteLine("║           MENÚ DE JUEGO          ║");
+Console.WriteLine("╠══════════════════════════════════╣");
+Console.WriteLine("║ 1. Iniciar enfrentamiento        ║");
+Console.WriteLine("║                                  ║");
+Console.WriteLine("║ 2. Cargar personaje              ║");
+Console.WriteLine("║                                  ║");
+Console.WriteLine("║ 3. Elegir personaje              ║");
+Console.WriteLine("╚══════════════════════════════════╝");
+
+int menu = Convert.ToInt32(Console.ReadLine());
+switch (menu)
+{
+    case 1:
+    break;
+    case 2:
+    Console.WriteLine("Nombre:");
+    nuevo = new();
+    nuevo.Nombre = Console.ReadLine();
+    Console.WriteLine("Apodo:");
+    nuevo.Apodo = Console.ReadLine();
+    Console.WriteLine("Tipo:");
+    nuevo.Tipo = Console.ReadLine();
+    nuevo.FechaNac = DateTime.Now;
+    Console.WriteLine("Edad:");
+    nuevo.Edad = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Velocidad:");
+    nuevo.Velocidad = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Destreza:");
+    nuevo.Destreza = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Fuerza:");
+    nuevo.Fuerza = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Nivel:");
+    nuevo.Nivel = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Armadura:");
+    nuevo.Armadura = Convert.ToInt32(Console.ReadLine());
+    nuevo.Salud = 100;
+    ListaPersonajes.Add(nuevo);
+    Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
+
+    Console.WriteLine("Su personaje fue cargado con exito!");
+    Environment.Exit(0);
+
+    break;
+    case 3:
+    break;
+    default:
+    Console.WriteLine("Numero invalido");
+    Environment.Exit(0);
+    break;
+}
 
 Console.WriteLine("Estos son nuestros Peleadores disponibles:");
 Thread.Sleep(1000);
@@ -82,6 +142,38 @@ Console.WriteLine("╚═══════════════════�
    }
 }
 
+Random rand = new Random();
+int indiceAleatorio;
+Personaje Player1 = new();
+if (menu == 3)
+{
+    Console.WriteLine("Ingrese el nombre del personaje:");
+      string nombreBuscado = Console.ReadLine();
+
+        // Buscar el personaje por su nombre en la lista
+        Personaje personajeEncontrado = ListaPersonajes.Find(p => p.Nombre.ToLower() == nombreBuscado.ToLower());
+
+        // Verificar si se encontró el personaje
+        if (personajeEncontrado != null)
+        {
+            Console.WriteLine("=== PERSONAJE Seleccionado ===");
+            Player1 = personajeEncontrado;
+            ListaPersonajes.Remove(personajeEncontrado);
+        }
+        else
+        {
+            Console.WriteLine("El personaje no fue encontrado");
+            Environment.Exit(0);
+
+        }
+
+}else
+{
+    
+    indiceAleatorio = rand.Next(ListaPersonajes.Count);
+    Player1 = ListaPersonajes[indiceAleatorio];
+    ListaPersonajes.Remove(ListaPersonajes[indiceAleatorio]);  //Lo quito de la lista y solo volverá el ganador
+}
 
 Console.WriteLine("╔══════════════════════════════════════╗");
 Console.WriteLine("║                                      ║");
@@ -90,10 +182,9 @@ Console.WriteLine("║                                      ║");
 Console.WriteLine("╚══════════════════════════════════════╝");
 Thread.Sleep(1000);
 
-Random rand = new Random();
-int indiceAleatorio = rand.Next(ListaPersonajes.Count);
-Personaje Player1 = ListaPersonajes[indiceAleatorio];
-ListaPersonajes.Remove(ListaPersonajes[indiceAleatorio]);  //Lo quito de la lista y solo volverá el ganador
+
+
+
 
 indiceAleatorio = rand.Next(ListaPersonajes.Count);
 Personaje Player2 = ListaPersonajes[indiceAleatorio];
@@ -213,9 +304,11 @@ if (Player1.Salud > 0)
     
 }
 Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
-Console.WriteLine("////////////////////////////////////");
-Console.WriteLine("           FIN DEL JUEGO            ");
-Console.WriteLine("////////////////////////////////////");
+Console.WriteLine("╔══════════════════════════════════════╗");
+Console.WriteLine("║                                      ║");
+Console.WriteLine("║            FIN DEL JUEGO             ║");
+Console.WriteLine("║                                      ║");
+Console.WriteLine("╚══════════════════════════════════════╝");
 
 static void mostrarPersonaje(Personaje player,int num){
 Console.WriteLine("╔══════════════════════════════════════╗");
