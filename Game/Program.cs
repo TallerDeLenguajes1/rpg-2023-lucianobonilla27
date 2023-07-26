@@ -7,6 +7,7 @@ Personaje nuevo;
 FabricaDePersonaje fp = new();
 List<Personaje> ListaPersonajes = new();
 PersonajeJson Json = new();
+Console.WriteLine("");
 string title =
 @"██████╗░██████╗░░██████╗░  ░█████╗░██████╗░███████╗███╗░░██╗░█████╗░  ██████╗░███████╗
 ██╔══██╗██╔══██╗██╔════╝░  ██╔══██╗██╔══██╗██╔════╝████╗░██║██╔══██╗  ██╔══██╗██╔════╝
@@ -26,6 +27,8 @@ string title =
         
 // Pausa de 1 segundo para mostrar la portada
 Thread.Sleep(1000);
+Console.WriteLine("");
+
 
 Console.WriteLine("Bienvenido a la RPG Arena de Batalla");
 Console.Write("Cargando.");
@@ -61,6 +64,7 @@ else
     Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 }
 
+Console.WriteLine("");
 Console.WriteLine("╔══════════════════════════════════╗");
 Console.WriteLine("║           MENÚ DE JUEGO          ║");
 Console.WriteLine("╠══════════════════════════════════╣");
@@ -229,7 +233,13 @@ int defensa;
 int ajuste = 500;
 
 
-Console.WriteLine("/////////////////EMPIEZA LA BATALLA//////////////////");
+Console.WriteLine("╔══════════════════════════════════════╗");
+Console.WriteLine("║                                      ║");
+Console.WriteLine("║        ¡EMPIEZA LA BATALLA!          ║");
+Console.WriteLine("║                                      ║");
+Console.WriteLine("╚══════════════════════════════════════╝");
+Console.WriteLine("");
+
 while (Player1.Salud > 0 && Player2.Salud > 0)
 {
     if ((turnos % 2) != 0) 
@@ -238,20 +248,24 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
         efectividad = rand.Next(1,101);
         defensa = Player2.Armadura * Player2.Velocidad;
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
-        switch (rand.Next(0,3))
+        switch (rand.Next(0,4))
         {
             case 0:
-             Console.WriteLine($"{Player1.Nombre} ataca y realiza " + daño + " de daño");
+             Console.WriteLine($"¡Un ataque devastador! {Player1.Nombre} realiza " + daño + " de daño");
             break;
 
             case 1:
-             Console.WriteLine($"El {Player1.Tipo} {Player1.Nombre} realizo un ataque causando {daño} de daño");
+             Console.WriteLine($"La lucha es feroz, El {Player1.Tipo} {Player1.Nombre} realizo un ataque causando {daño} de daño");
             
             break;
 
             case 2:
              Console.WriteLine($"El {Player1.Apodo} {Player1.Nombre} realizo un ataque causando {daño} de daño");
              
+            break;
+
+            case 3:
+             Console.WriteLine($"¡Un golpe certero! {Player1.Nombre} realiza " + daño + " de daño");
             break;
             
         }
@@ -263,22 +277,26 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
         efectividad = rand.Next(1,101);
         defensa = Player1.Armadura * Player1.Velocidad;
         int daño = ((ataque * efectividad) - defensa)/ ajuste;
-         switch (rand.Next(0,3))
+         switch (rand.Next(0,4))
         {
             case 0:
-             Console.WriteLine($"{Player2.Nombre} ataca y realiza " + daño + " de daño");
+             Console.WriteLine($"¡Que impresionante! {Player2.Nombre} ataca y realiza " + daño + " de daño");
             break;
 
             case 1:
-             Console.WriteLine($"El {Player2.Tipo} {Player2.Nombre} realizo un ataque causando {daño} de daño");
+             Console.WriteLine($"¡Maravillosa juagada! El {Player2.Tipo} {Player2.Nombre} causando {daño} de daño");
             
             break;
 
             case 2:
-             Console.WriteLine($"El {Player2.Apodo} {Player2.Nombre} realizo un ataque causando {daño} de daño");
+             Console.WriteLine($"¡Los golpes son rápidos y certeros! El {Player2.Apodo} {Player2.Nombre} realizó {daño} de daño");
              
             break;
+
+            case 3:
+             Console.WriteLine($" El enemigo se encuentra en aprietos tras el ataque de {Player2.Nombre} con " + daño + " de daño");
             
+            break;
         }
     
         Player1.Salud -= daño;
@@ -288,21 +306,103 @@ while (Player1.Salud > 0 && Player2.Salud > 0)
     
 }
 
+
+Console.WriteLine("");
 if (Player1.Salud > 0)
 {
-    Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
+    Console.WriteLine("╔══════════════════════════════════════╗");
+    Console.WriteLine("║              VENCEDOR                ║");
     Player1 = incrementoNivel(Player1);
     mostrarPersonaje(Player1,1);
     ListaPersonajes.Add(Player1);
 }else
 {
-    Console.WriteLine("//////////////EL VENCEDOR ES///////////////");
+    Console.WriteLine("╔══════════════════════════════════════╗");
+    Console.WriteLine("║              VENCEDOR                ║");
     Player2 = incrementoNivel(Player2);
     mostrarPersonaje(Player2,2);
     ListaPersonajes.Add(Player2);
 
     
 }
+Thread.Sleep(500);
+
+
+Console.WriteLine("");
+Console.WriteLine("La antorcha de la gloria ahora brilla en tus manos, honra tu fuerza y destreza");
+Thread.Sleep(1000);
+
+string antorcha = @"__________________________________________________
+____________________________1111__________________
+___________________________11_1¶¶1________________
+___________________________11_1__¶¶1______________
+___________________________11_1¶1_1¶¶_____________
+___________________________11_1¶¶¶1_¶¶1___________
+____________________________1_1¶¶¶¶1_1¶1__________
+___________________________11_1¶¶¶¶¶¶11¶¶_________
+___________________________1__¶1¶¶¶¶¶¶11¶1________
+___________________________1_1¶1¶¶¶¶¶1¶11¶1_______
+_____________________11¶__11_¶¶1¶¶¶¶¶¶1¶1¶¶_______
+____________________111¶¶¶1_1¶1¶¶¶¶¶¶¶1¶¶1¶¶______
+____________________1_11_1_1¶¶1¶¶¶¶¶¶¶¶1¶1¶¶______
+____________________11¶¶111¶¶11¶¶1¶¶¶¶¶1¶¶1¶1_____
+____________________11¶¶11¶111¶¶¶__¶¶¶¶1¶¶1¶¶_____
+___________________11¶1¶¶1111¶¶¶¶___¶¶¶¶1¶¶¶¶1____
+__________________1¶¶11¶¶¶¶¶¶¶¶¶1___1¶¶¶1¶1¶¶1____
+__________________¶¶¶11¶¶¶¶¶¶¶¶¶_____¶¶¶1¶¶¶¶¶____
+_________________¶¶¶11¶¶¶¶¶¶11¶1_____¶¶¶1¶¶¶¶¶____
+_________________¶¶¶11¶¶¶¶¶¶______1__¶¶¶1¶¶¶¶1____
+________________1¶¶11¶¶¶¶¶¶______11__¶¶¶¶¶¶¶¶1____
+________________1¶¶1¶¶¶¶¶¶___11111___¶¶1¶¶¶¶¶_____
+_________________¶¶1¶¶¶¶¶1___1111____¶¶1¶¶¶¶______
+__________________¶¶¶¶¶¶¶__111111___¶¶11¶¶¶_______
+___________________¶¶¶¶¶¶_1111111__¶¶¶¶¶¶¶________
+_______________1111111¶¶¶__1__111_¶¶¶¶¶1__________
+_______________¶1_______11_111___1¶11¶1__11_______
+________________11111¶1111111¶_11_________¶¶1_____
+_________________¶1111111111¶¶_111_11_1¶1¶¶¶______
+__________________¶111111111¶111111111¶¶¶¶________
+__________________111¶11¶11¶¶¶¶1¶¶1¶1¶¶¶¶_________
+__________________¶11111111¶¶¶11¶11¶¶¶¶¶__________
+__________________1111111111¶11¶11111¶¶¶__________
+___________________1¶1111111¶1¶11¶1¶¶¶1___________
+___________________11111111¶111111¶¶¶¶____________
+___________________11111111¶¶¶11111¶¶1____________
+____________________1111111¶¶111111¶¶_____________
+____________________1111111¶¶111111¶¶_____________
+____________________1111111¶¶111111¶¶_____________
+____________________¶111111¶111111¶¶1_____________
+____________________¶11111¶¶¶11111¶¶______________
+____________________¶11111¶¶¶11111¶¶______________
+___________________1¶11111¶¶_11111¶¶______________
+____________________¶111111¶¶1111¶¶1______________
+____________________1111111¶¶1111¶¶_______________
+____________________111111¶¶11111¶¶_______________
+____________________¶111111¶1111¶¶1_______________
+____________________111111¶¶1111¶¶1_______________
+____________________111111¶¶111¶¶¶________________
+____________________11111¶¶111¶¶¶1________________
+____________________11111¶¶111¶¶¶_________________
+____________________11111¶¶111¶¶__________________
+__________________1111111¶¶11¶¶¶__________________
+________________1¶¶11¶¶¶¶¶¶11¶¶¶__________________
+______________1¶¶¶¶¶11111111¶¶¶¶1_________________
+____________11¶111____1____¶¶¶¶¶__________________
+_1111111111111_111¶¶¶¶¶¶¶¶¶¶¶¶¶¶__________________
+_________111111¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___________________
+_11111111¶¶¶¶¶¶¶¶¶¶¶¶111¶111¶¶____________________
+_¶¶¶11¶¶¶¶¶¶¶¶¶¶¶¶¶¶11111_11¶1____________________
+_111¶¶¶¶¶¶¶¶11111______1¶11¶¶_____________________
+_¶¶¶¶11_____________1111¶11¶¶_____________________
+_____________________111¶11¶¶_____________________
+_____________________1¶¶¶¶¶¶______________________
+_____________________11¶1¶¶1______________________
+__________________________________________________
+__________________________________________________
+";
+Console.WriteLine(antorcha);
+
+
 Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 Console.WriteLine("╔══════════════════════════════════════╗");
 Console.WriteLine("║                                      ║");
