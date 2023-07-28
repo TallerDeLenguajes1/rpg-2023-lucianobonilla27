@@ -73,6 +73,8 @@ Console.WriteLine("║                                  ║");
 Console.WriteLine("║ 2. Cargar personaje              ║");
 Console.WriteLine("║                                  ║");
 Console.WriteLine("║ 3. Elegir personaje              ║");
+Console.WriteLine("║                                  ║");
+Console.WriteLine("║ 4. Salir                         ║");
 Console.WriteLine("╚══════════════════════════════════╝");
 
 int menu = Convert.ToInt32(Console.ReadLine());
@@ -105,12 +107,19 @@ switch (menu)
     ListaPersonajes.Add(nuevo);
     Json.GuardarPersonajes(ListaPersonajes,"Personajes.Json");
 
-    Console.WriteLine("Su personaje fue cargado con exito!");
+    Console.WriteLine("Su personaje fue cargado con exito y podrá ser usado en la próxima batalla!");
     Environment.Exit(0);
 
     break;
+
     case 3:
     break;
+
+    case 4:
+    Console.WriteLine("Gracias por jugar RPG Arena de Batalla. ¡Hasta luego!");
+    Environment.Exit(0);
+    break;
+
     default:
     Console.WriteLine("Numero invalido");
     Environment.Exit(0);
@@ -330,7 +339,8 @@ Thread.Sleep(500);
 
 Console.WriteLine("");
 Console.WriteLine("La antorcha de la gloria ahora brilla en tus manos, honra tu fuerza y destreza");
-Thread.Sleep(1000);
+Console.WriteLine("--Presione una tecla para recibir la antorcha--");
+Console.ReadLine();
 
 string antorcha = @"__________________________________________________
 ____________________________1111__________________
@@ -449,3 +459,4 @@ static Personaje incrementoNivel(Personaje pj){
     pj.Salud = 100;
     return pj;
 }
+
